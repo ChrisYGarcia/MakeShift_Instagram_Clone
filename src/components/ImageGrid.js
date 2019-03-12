@@ -8,6 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
+
 const styles = {
   media: {
     height: 0,
@@ -23,13 +24,13 @@ class ImageGrid extends Component {
 
   componentDidMount() {
     axios.get("https://jsonplaceholder.typicode.com/photos").then(res => {
-      this.setState(() => {
-        return {
-          photos: res.data
-        };
-      });
-    });
+      const photos = res.data;
+      this.setState({ photos });
+  })
   }
+  
+
+
 
   render() {
     const cards = [
@@ -59,14 +60,16 @@ class ImageGrid extends Component {
       23,
       24
     ];
-    console.log(this.state.photos[0]);
+  //  let objParsed = JSON.parse(this.state.photos[0]);
+    let arr = this.state.photos.map(photo => photo.url);
+    console.log(arr);
     return (
       <Grid container spacing={40}>
         {cards.map(card => (
-          <Grid item key={card} sm={6} md={4} lg={3}>
+          <Grid item key={card} sm={6} md={5} lg={3}>
             <Card>
               <CardMedia
-                image="https://www.gstatic.com/webp/gallery3/1.png" // eslint-disable-line max-len
+                image={arr[card]}  // eslint-disable-line max-len
                 title="Image title"
                 style={styles.media}
               />
