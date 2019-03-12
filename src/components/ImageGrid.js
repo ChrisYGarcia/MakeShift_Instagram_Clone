@@ -14,6 +14,10 @@ const styles = {
     height: 0,
     paddingTop: "56.25%", // 16:9,
     marginTop: "30"
+  },
+  card: {
+    display: "inline-block",
+    width: "100%"
   }
 };
 
@@ -66,8 +70,8 @@ class ImageGrid extends Component {
     return (
       <Grid container spacing={40}>
         {cards.map(card => (
-          <Grid item key={card} sm={6} md={5} lg={3}>
-            <Card>
+          <Grid item key={card} sm={6} md={4} lg={3}>
+            <Card style = {styles.card}>
               <CardMedia
                 image={arr[card]}  // eslint-disable-line max-len
                 title="Image title"
