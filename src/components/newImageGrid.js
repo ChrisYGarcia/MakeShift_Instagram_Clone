@@ -4,7 +4,6 @@ import GridList from "@material-ui/core/GridList";
 import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
 import GridListTile from "@material-ui/core/GridListTile";
-//import IconButton from "@material-ui/core/IconButton";
 import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
 import FlatButton from "material-ui/FlatButton";
@@ -13,12 +12,41 @@ import GridListTileBar from "@material-ui/core/GridListTileBar";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
+import svgPath from "../media/svg";
+
+console.log(svgPath);
 class NewImageGrid extends Component {
   state = {
     photos: [],
     currentImg: "",
     open: false,
-    description: ""
+    description: [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ]
   };
 
   componentDidMount() {
@@ -79,7 +107,7 @@ class NewImageGrid extends Component {
     ];
     return (
       <div>
-        <GridList cols={5} cellHeight={250}>
+        <GridList cols={5} cellHeight={300}>
           <GridListTile key="Subheader" cols={5} style={{ height: "auto" }}>
             <ListSubheader component="div">Christopher Garcia</ListSubheader>
           </GridListTile>
@@ -88,11 +116,16 @@ class NewImageGrid extends Component {
               <img src={imgArr[tile]} alt={titleArr[tile]} />
               <GridListTileBar
                 title={titleArr[tile]}
-                subtitle={<span>Description:{this.state.description}</span>}
+                subtitle={
+                  <span>
+                    Description:
+                    {this.state.description[tile]}
+                  </span>
+                }
                 actionIcon={
                   <IconButton onClick={() => this.handleOpen(imgArr[tile])}>
                     <SvgIcon>
-                      <path d="M 0.8125 0 C 0.4125 0 1.4802974e-16 0.4125 0 0.8125 L 0 23.1875 C 0 23.5875 0.4125 24 0.8125 24 L 23.1875 24 C 23.5875 24 24 23.5875 24 23.1875 L 24 0.8125 C 24 0.4125 23.5875 1.4802974e-16 23.1875 0 L 0.8125 0 z M 10 4 C 13.3 4 16 6.7 16 10 C 16 11.3 15.60625 12.5 14.90625 13.5 L 20.09375 18.6875 C 20.19375 18.7875 20.1875 19.1875 19.6875 19.6875 C 19.1875 20.1875 18.7875 20.19375 18.6875 20.09375 L 13.5 14.90625 C 12.5 15.60625 11.3 16 10 16 C 6.7 16 4 13.3 4 10 C 4 6.7 6.7 4 10 4 z M 10 6 C 7.790861 6 6 7.790861 6 10 C 6 12.209139 7.790861 14 10 14 C 12.209139 14 14 12.209139 14 10 C 14 7.790861 12.209139 6 10 6 z" />
+                      <path fill="white" d={svgPath} />
                     </SvgIcon>
                   </IconButton>
                 }
@@ -111,7 +144,7 @@ class NewImageGrid extends Component {
                 <TextField
                   id="outlined-name"
                   label="Enter Description"
-                  value={this.state.Description}
+                  value={this.state.Description[tile]}
                   onChange={this.handleChange}
                   margin="normal"
                   variant="outlined"
@@ -119,10 +152,10 @@ class NewImageGrid extends Component {
 
                 <DialogActions>
                   <Button onClick={this.handleClose} color="primary">
-                    Cancel
+                    Submit
                   </Button>
                   <Button onClick={this.handleClose} color="primary">
-                    Submit
+                    Cancel
                   </Button>
                 </DialogActions>
               </Dialog>
