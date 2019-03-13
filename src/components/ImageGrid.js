@@ -1,173 +1,175 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { Modal } from "@material-ui/core";
-import PropTypes from "prop-types";
+import GridList from "@material-ui/core/GridList";
 import Dialog from "@material-ui/core/Dialog";
-import { withStyles } from "@material-ui/core/styles";
-
-const styles = {
-  media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9,
-    marginTop: "30"
-  },
-  card: {
-    display: "inline-block",
-    width: "100%"
-  },
-  dialog: {
-    borderBottom: "none",
-    borderTop: "none",
-    boxSizing: "border-box",
-    color: "rgba(0, 0, 0, 0.6)",
-    fontSize: 16
-  }
-};
-
-/* const styles1 = theme => ({
-  paper: {
-    position: "absolute",
-    width: theme.spacing.unit * 50,
-    backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing.unit * 4,
-    outline: "none"
-  }
-});
-
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`
-  };
-} */
+import Button from "@material-ui/core/Button";
+import GridListTile from "@material-ui/core/GridListTile";
+import IconButton from "@material-ui/core/IconButton";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import GridListTileBar from "@material-ui/core/GridListTileBar";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import TextField from "@material-ui/core/TextField";
+import DialogActions from "@material-ui/core/DialogActions";
+import svgPath from "../media/svg";
+import { Typography } from "@material-ui/core";
 
 class ImageGrid extends Component {
   state = {
     photos: [],
+    currentImg: "",
+    currentTile: 0,
     open: false,
-    currentImg: ""
+    descriptions: []
   };
 
+  // Once ImageGrid is mounted, this method let local storage and/or the API update any information into state.
   componentDidMount() {
-    axios.get("https://jsonplaceholder.typicode.com/photos").then(res => {
-      const photos = res.data;
-      this.setState({ photos });
-    });
+    localStorage.getItem("Descriptions") &&
+      this.setState({
+        descriptions: JSON.parse(localStorage.getItem("Descriptions"))
+      });
+
+    axios
+      .get("https://jsonplaceholder.typicode.com/photos")
+      .then(res => {
+        const photos = res.data;
+        this.setState({ photos });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  handleOpen = img => {
-    this.setState({ open: true, currentImg: img });
+  // This method opens the dialog box and updates the currentImg and currentTile states from the given params
+  // This is important for updating descriptions
+  handleOpen = (img, tile) => {
+    this.setState({ open: true, currentImg: img, currentTile: tile });
   };
 
+  // This method closes the dialog box
   handleClose = () => {
     this.setState({ open: false });
   };
 
+  // This method takes in the number of the currentTile as well as the user input to update the specific element in the descriptions array within state
+  handleChange = tile => e => {
+    console.log(tile);
+    let descriptions = [...this.state.descriptions]; // create the copy of state array
+    descriptions[tile] = e.target.value; //new value
+    this.setState({ descriptions }); // updating state
+  };
+
+  // Keeping the localStorage up to date
+  componentWillUpdate() {
+    localStorage.setItem(
+      "Descriptions",
+      JSON.stringify(this.state.descriptions)
+    );
+  }
+
   render() {
-    //  const { classes } = this.props;
-    const cards = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      24
+    // Testing if descriptions are updating
+    console.log(this.state.descriptions);
+
+    // imgArr holds the 'url' data from the photos json data
+    let imgArr = this.state.photos.map(photo => photo.url);
+    // titleArr holds the 'title' data from the photos json data
+    let titleArr = this.state.photos.map(photo => photo.title);
+
+    // This array is to control how many tiles are being outputted. At the moment, it is 25 elements for 25 image tiles
+    // the numbers are useful in order to iterate through the imgArr/titleArr and get the specific url/title data we need
+    // prettier-ignore
+    let gridCount = [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24
     ];
-    //  let objParsed = JSON.parse(this.state.photos[0]);
-    let arr = this.state.photos.map(photo => photo.url);
-    console.log(arr);
-    const actions = [
-      <Button label="Close" primary={true} onClick={this.handleClose} />
-    ];
+
     return (
-      <Grid container spacing={40}>
-        {cards.map(card => (
-          <Grid item key={card} sm={6} md={4} lg={3}>
-            <Card style={styles.card}>
-              <CardMedia
-                image={arr[card]}
-                title="Image title"
-                style={styles.media}
-              />
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  Heading
-                </Typography>
-                <Typography>
-                  This is a media card. You can use this section to describe the
-                  content.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button
-                  onClick={() => this.handleOpen(arr[card])}
-                  size="small"
-                  color="primary"
-                >
-                  View
-                </Button>
-                <div>
-                  <Dialog
-                    style={styles.dialog}
-                    actions={actions}
-                    modal={true}
-                    open={this.state.open}
-                    onRequestClose={this.handleClose}
+      <div>
+        <GridList cols={5} cellHeight={300}>
+          {" "}
+          {/* GridList of 5 columns */}
+          <GridListTile key="Subheader" cols={5} style={{ height: "auto" }}>
+            <ListSubheader
+              component="div"
+              style={{
+                fontSize: 50,
+                marginBottom: 100,
+                marginLeft: -15
+              }}
+            >
+              Christopher Garcia - Label Insight Front-End Challenge
+            </ListSubheader>
+            <Typography
+              component="h5"
+              variant="h5"
+              gutterBottom
+              style={{ marginBottom: 50 }}
+            >
+              Click on pencil icon to edit descriptions
+            </Typography>
+          </GridListTile>{" "}
+          {/* Iterating through gridCount*/}
+          {gridCount.map(tile => (
+            <GridListTile key={tile.id}>
+              <img src={imgArr[tile]} alt={titleArr[tile]} />
+              <GridListTileBar
+                style={{
+                  height: "25%",
+                  wordBreak: "break-all",
+                  textAlign: "justify"
+                }}
+                title={titleArr[tile]}
+                subtitle={
+                  <span style={{ fontSize: 15 }}>
+                    Description: {this.state.descriptions[tile]}
+                  </span>
+                }
+                actionIcon={
+                  <IconButton
+                    onClick={() => this.handleOpen(imgArr[tile], tile)}
                   >
-                    <img
-                      src={this.state.currentImg}
-                      alt=""
-                      // style={{ width: "100%" }}
-                    />
-                  </Dialog>
-                </div>
-                <Button size="small" color="primary">
-                  Edit
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                    <SvgIcon>
+                      <path fill="white" d={svgPath} />
+                    </SvgIcon>
+                  </IconButton>
+                }
+              />
+              <Dialog
+                overlayStyle={{ backgroundColor: "transparent" }}
+                style={{ width: "600px", height: "750px", marginLeft: "30%" }}
+                modal={false}
+                open={this.state.open}
+                onClose={this.handleClose}
+              >
+                <img
+                  src={this.state.currentImg}
+                  alt=""
+                  style={{ width: "100%" }}
+                />
+                <TextField
+                  id="standard-name"
+                  label="Enter Description"
+                  value={this.state.descriptions[this.state.currentTile]}
+                  onChange={this.handleChange(this.state.currentTile)}
+                  margin="normal"
+                  variant="outlined"
+                />
+
+                <DialogActions>
+                  <Button onClick={this.handleClose} color="primary">
+                    Submit
+                  </Button>
+                  <Button onClick={this.handleClose} color="primary">
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>
     );
   }
 }
-
-// We need an intermediary variable for handling the recursive nesting.
 
 export default ImageGrid;
