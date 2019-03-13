@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Christopher Garcia
 
-Front-end Challenge for the Javascript Engineer internship at Label Insight
+Front-end Challenge for the Javascript Engineer Internship at Label Insight
 I used React.js for the UI framework and material-ui for the CSS framework
 
 ## 1. Installation instructions
