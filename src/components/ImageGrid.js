@@ -86,8 +86,8 @@ class ImageGrid extends Component {
     return (
       <div>
         <GridList cols={5} cellHeight={300}>
-          {" "}
           {/* GridList of 5 columns */}
+
           <GridListTile key="Subheader" cols={5} style={{ height: "auto" }}>
             <ListSubheader
               component="div"
@@ -107,7 +107,8 @@ class ImageGrid extends Component {
             >
               Click on pencil icon to edit descriptions
             </Typography>
-          </GridListTile>{" "}
+          </GridListTile>
+
           {/* Iterating through gridCount*/}
           {gridCount.map(tile => (
             <GridListTile key={tile.id}>

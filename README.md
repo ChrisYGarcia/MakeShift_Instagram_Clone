@@ -3,7 +3,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Christopher Garcia
 
 Front-end Challenge for the Javascript Engineer Internship at Label Insight
-I used React.js for the UI framework and material-ui for the CSS framework
+
+I used React.js for the UI framework and material-ui for the CSS framework.
+I installed and used the JavaScript library Axios in order to send Ajax calls to the API.
+I used Axios because it was more browser-supported than other tools/libraries such as fetch().
+I was able to use ES2015 syntax because CRA(Create React App) comes with Babel included, as well as webpack.
 
 ## 1. Installation instructions
 
