@@ -2,7 +2,7 @@
   "name": "label_insight_frontend-challenge",
   "author": "Christopher Garcia",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "axios": "^0.18.0",
