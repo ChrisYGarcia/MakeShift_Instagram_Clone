@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import GridListTile from "@material-ui/core/GridListTile";
 import Icon from "@material-ui/core/Icon";
 import IconButton from "@material-ui/core/IconButton";
-import FlatButton from "material-ui/FlatButton";
+//import FlatButton from "material-ui/FlatButton";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import SvgIcon from "@material-ui/core/SvgIcon";
@@ -15,63 +15,58 @@ import DialogActions from "@material-ui/core/DialogActions";
 import svgPath from "../media/svg";
 
 console.log(svgPath);
+
 class NewImageGrid extends Component {
+
   state = {
     photos: [],
     currentImg: "",
+    currentTile: 0,
     open: false,
-    description: [
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      ""
-    ]
+    description: []
   };
 
+
+
+  fillDescriptions() {
+    let tempArr = [];
+    for(let i = 0; i < 24; i++) {
+      tempArr[i] = "";
+    }
+    const description = tempArr;
+    this.setState({description})
+  }
+
   componentDidMount() {
+  
     axios.get("https://jsonplaceholder.typicode.com/photos").then(res => {
       const photos = res.data;
       this.setState({ photos });
     });
   }
 
-  handleOpen = img => {
-    this.setState({ open: true, currentImg: img });
+  handleOpen = (img, tile) => {
+    this.setState({ open: true, currentImg: img , currentTile: tile});
   };
 
   handleClose = () => {
     this.setState({ open: false });
   };
 
-  handleChange = event => {
-    this.setState({
-      description: event.target.value
-    });
+  handleChange = tile => e => {
+    console.log(tile);
+    let description = [...this.state.description];     // create the copy of state array
+    description[tile] = e.target.value;                  //new value
+    this.setState({ description });      
   };
 
+  handleCancel = () => {
+   
+    
+}
+
   render() {
-    let imageListContent;
+  //  let imageListContent;
     console.log(this.state.description);
     let imgArr = this.state.photos.map(photo => photo.url);
     let titleArr = this.state.photos.map(photo => photo.title);
@@ -102,9 +97,7 @@ class NewImageGrid extends Component {
       23,
       24
     ];
-    const actions = [
-      <FlatButton label="Close" primary={true} onClick={this.handleClose} />
-    ];
+  
     return (
       <div>
         <GridList cols={5} cellHeight={300}>
@@ -112,6 +105,7 @@ class NewImageGrid extends Component {
             <ListSubheader component="div">Christopher Garcia</ListSubheader>
           </GridListTile>
           {arr2.map(tile => (
+           
             <GridListTile key={tile.id}>
               <img src={imgArr[tile]} alt={titleArr[tile]} />
               <GridListTileBar
@@ -123,7 +117,7 @@ class NewImageGrid extends Component {
                   </span>
                 }
                 actionIcon={
-                  <IconButton onClick={() => this.handleOpen(imgArr[tile])}>
+                  <IconButton onClick={() => this.handleOpen(imgArr[tile], tile)}>
                     <SvgIcon>
                       <path fill="white" d={svgPath} />
                     </SvgIcon>
@@ -131,10 +125,11 @@ class NewImageGrid extends Component {
                 }
               />
               <Dialog
-                actions={actions}
+                overlayStyle={{backgroundColor: 'transparent'}}
+                style={{width: '600px', height: '750px', marginLeft: '30%'}}
                 modal={false}
                 open={this.state.open}
-                onRequestClose={this.handleClose}
+                onClose={this.handleClose}
               >
                 <img
                   src={this.state.currentImg}
@@ -142,10 +137,10 @@ class NewImageGrid extends Component {
                   style={{ width: "100%" }}
                 />
                 <TextField
-                  id="outlined-name"
+                  id="standard-name"
                   label="Enter Description"
-                  value={this.state.Description[tile]}
-                  onChange={this.handleChange}
+                  value={this.state.description[this.state.currentTile]}
+                  onChange={this.handleChange(this.state.currentTile)}
                   margin="normal"
                   variant="outlined"
                 />
@@ -155,7 +150,7 @@ class NewImageGrid extends Component {
                     Submit
                   </Button>
                   <Button onClick={this.handleClose} color="primary">
-                    Cancel
+                    Close
                   </Button>
                 </DialogActions>
               </Dialog>
