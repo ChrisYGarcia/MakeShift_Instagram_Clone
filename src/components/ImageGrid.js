@@ -5,7 +5,6 @@ import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
 import GridListTile from "@material-ui/core/GridListTile";
 import IconButton from "@material-ui/core/IconButton";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import GridListTileBar from "@material-ui/core/GridListTileBar";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import TextField from "@material-ui/core/TextField";
@@ -89,21 +88,11 @@ class ImageGrid extends Component {
           {/* GridList of 5 columns */}
 
           <GridListTile key="Subheader" cols={5} style={{ height: "auto" }}>
-            <ListSubheader
-              component="div"
-              style={{
-                fontSize: 50,
-                marginBottom: 100,
-                marginLeft: -15
-              }}
-            >
-              Christopher Garcia - Label Insight Front-End Challenge
-            </ListSubheader>
             <Typography
               component="h5"
               variant="h5"
               gutterBottom
-              style={{ marginBottom: 50 }}
+              style={{ marginBottom: 50, marginTop: 50 }}
             >
               Click on pencil icon to edit descriptions
             </Typography>
@@ -135,39 +124,35 @@ class ImageGrid extends Component {
                   </IconButton>
                 }
               />
-              <Dialog
-                overlayStyle={{ backgroundColor: "transparent" }}
-                style={{ width: "600px", height: "750px", marginLeft: "30%" }}
-                modal={false}
-                open={this.state.open}
-                onClose={this.handleClose}
-              >
-                <img
-                  src={this.state.currentImg}
-                  alt=""
-                  style={{ width: "100%" }}
-                />
-                <TextField
-                  id="standard-name"
-                  label="Enter Description"
-                  value={this.state.descriptions[this.state.currentTile]}
-                  onChange={this.handleChange(this.state.currentTile)}
-                  margin="normal"
-                  variant="outlined"
-                />
-
-                <DialogActions>
-                  <Button onClick={this.handleClose} color="primary">
-                    Submit
-                  </Button>
-                  <Button onClick={this.handleClose} color="primary">
-                    Close
-                  </Button>
-                </DialogActions>
-              </Dialog>
             </GridListTile>
           ))}
         </GridList>
+        <Dialog
+          overlayStyle={{ backgroundColor: "transparent" }}
+          // style={{ width: "600px", height: "750px", marginLeft: "30%" }}
+          modal={false}
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <img src={this.state.currentImg} alt="" style={{ width: "100%" }} />
+          <TextField
+            id="standard-name"
+            label="Enter Description"
+            value={this.state.descriptions[this.state.currentTile]}
+            onChange={this.handleChange(this.state.currentTile)}
+            margin="normal"
+            variant="outlined"
+          />
+
+          <DialogActions>
+            <Button onClick={this.handleClose} color="primary">
+              Submit
+            </Button>
+            <Button onClick={this.handleClose} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }

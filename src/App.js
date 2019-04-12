@@ -8,7 +8,7 @@ class App extends Component {
     return (
       <div>
         <MuiThemeProvider>
-          <Navbar /> {/* This navbar is not rendering(likely css issue)*/}
+          <Navbar />
           <ImageGrid />
         </MuiThemeProvider>
       </div>
