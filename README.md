@@ -2,7 +2,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Christopher Garcia
 
-MakeShit Instagram clone powered by React.js
+MakeShift Instagram clone powered by React.js
 
 I used React.js for the UI framework and material-ui for the CSS framework.
 I installed and used the JavaScript library Axios in order to send Ajax calls to the API.
